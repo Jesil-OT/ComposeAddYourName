@@ -15,11 +15,17 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Create
+import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,49 +40,43 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             ComposeAddYourNameTheme {
-                Greeting("Android")
+                /**
+                 * always keep it outside your View Groups,
+                 * The Remember keyword just remember your value when re-composition happens
+                 ***/
+                var count by remember {
+                    mutableIntStateOf(0)
+                }
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(20.dp)
+                ) {
+
+                    /**
+                     * In other to Change this value we need state
+                     * */
+                    Text(
+                        text = count.toString(),
+                        fontSize = 30.sp
+                    )
+                    Button(onClick = {
+                        count++
+                    }) {
+                        Text(text = "Click me!")
+                    }
+                }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(
-    name: String,
-    modifier: Modifier = Modifier
-) {
-    LazyColumn(
-        modifier = modifier.fillMaxSize()
-    ) {
-        items(count = 10) { index ->
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center,
-                modifier = modifier.fillMaxWidth()
-            ) {
-                Text(
-                    fontSize = 20.sp,
-                    text = "Hello $name!",
-                    modifier = modifier.padding(10.dp)
-                )
-                Icon(
-                    imageVector = Icons.Default.Create,
-                    contentDescription = null,
-                    modifier = modifier
-                        .size(70.dp)
-                        .padding(10.dp)
-                )
-            }
-        }
-    }
-
-
-}
 
 @Preview(showBackground = true)
 @Composable
 fun GreetingPreview() {
     ComposeAddYourNameTheme {
-        Greeting("Jesil")
     }
 }
